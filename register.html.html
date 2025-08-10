@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Credit Swiss</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img src="https://via.placeholder.com/150x40?text=Credit+Swiss" alt="Credit Swiss Logo"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#accounts">Accounts</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Registration Form -->
+    <main class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>Create Your Account</h2>
+                    <p>Join thousands of satisfied customers worldwide</p>
+                </div>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="account-type">Account Type</label>
+                        <select id="account-type" class="form-control" required>
+                            <option value="">Select account type</option>
+                            <option value="personal">Personal Account</option>
+                            <option value="corporate">Corporate Account</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Create a password" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="form-control" placeholder="Confirm your password" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#" style="color: var(--accent-color);">Terms & Conditions</a> and <a href="#" style="color: var(--accent-color);">Privacy Policy</a></label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="login.html">Sign in here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>About Credit Swiss</h4>
+                    <p>Providing premium financial services since 2012 with a focus on security, transparency, and customer satisfaction.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Personal Banking</a></li>
+                        <li><a href="#">Business Accounts</a></li>
+                        <li><a href="#">Investment Plans</a></li>
+                        <li><a href="#">Loans & Credit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Fee Schedule</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect With Us</h4>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Credit Swiss Financial Services. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.hamburger-menu').addEventListener('click', function() {
+            document.querySelector('.main-nav ul').classList.toggle('show');
+        });
+
+        // Account Registration
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const accountType = document.getElementById('account-type').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Check if email already exists
+            const accounts = JSON.parse(localStorage.getItem('accounts') || [];
+            const emailExists = accounts.some(account => account.email === email);
+            
+            if (emailExists) {
+                alert('An account with this email already exists!');
+                return;
+            }
+            
+            // Create account object
+            const account = {
+                fullname,
+                email,
+                phone,
+                accountType,
+                password, // Note: In a real app, you would hash the password before storing
+                balance: accountType === 'personal' ? 1000 : 10000, // Starting balance
+                accountNumber: 'CS' + Math.floor(Math.random() * 1000000000).toString().padStart(9, '0'),
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            accounts.push(account);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            
+            // Also store the currently logged in user
+            localStorage.setItem('currentUser', JSON.stringify(account));
+            
+            // Redirect to dashboard or confirmation page
+            alert('Account created successfully!');
+            window.location.href = 'dashboard.html'; // You'll need to create this page
+        });
+    </script>
+</body>
+</html>

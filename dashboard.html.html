@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SecureBank — Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --deep:#0f1b5f;
+      --deep-2:#1d2c7c;
+      --accent:#4fc3f7;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --bg:#eef2f7;
+      --inactive:#e74c3c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8f9fc, #eef2f7);
+      color:#111827y;
+    }
+
+    /* Full-width header */
+    .full-width-header {
+      background: linear-gradient(135deg, var(--deep), var(--deep-2));
+      color: white;
+      padding: 20px 0;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      box-shadow: 0 3px 12px rgba(11,18,48,0.12);
+    }
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+    .welcome-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .brand-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .brand-subtitle {
+      font-size: 14px;
+      opacity: 0.85;
+      margin: 0;
+    }
+    /* User Profile with Picture */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-picture {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Status indicator positioned on photo */
+.profile-picture .account-status {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  background: var(--inactive);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border: 2px solid var(--deep);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+}
+
+.user-meta {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+}
+    .account-status {
+  position: absolute;
+  bottom: -8px;
+  right: -5px;
+  background: var(--inactive);
+  color: white;
+  border-radius: 12px;
+  padding: 3px 8px 3px 6px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--deep);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.account-status i {
+  font-size: 10px;
+}
+
+    /* Main content container */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 18px;
+    }
+
+    /* [Rest of your existing CSS styles] */
+
+    @media (max-width: 768px) {
+      .welcome-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      .header-content, .container {
+        padding: 0 12px;
+      }
+    }
+
+    /* Overview cards */
+    .overview{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 8px 28px rgba(11,18,48,0.06);
+      flex:1;
+      min-width:220px;
+    }
+    @media (max-width:600px){
+      .card{
+        min-width:100%;
+      }
+    }
+    .card h4{margin:0;color:var(--muted);font-weight:600}
+    .card .value{font-size:22px;font-weight:800;margin-top:10px}
+    .small-muted{color:var(--muted);font-size:13px;margin-top:8px}
+
+    /* Accounts table */
+    .accounts{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:0 8px 28px rgba(11,18,48,0.06);
+      margin-bottom:18px;
+      overflow-x: auto;
+    }
+    .accounts table{
+      width:100%;
+      border-collapse:collapse;
+      min-width: 500px;
+    }
+    .accounts th{
+      text-align:left;
+      color:var(--muted);
+      font-size:13px;
+      padding-bottom:10px;
+    }
+    .accounts td{
+      padding:10px 0;
+      border-top:1px solid #f0f3f8;
+    }
+    .balance{font-weight:700}
+
+    /* Transactions */
+    .transactions{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:0 8px 28px rgba(11,18,48,0.06);
+      overflow-x: auto;
+    }
+    .transactions-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tx-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      min-width: 400px;
+    }
+    .tx-item{
+      display:flex;
+      justify-content:space-between;
+      padding:10px 0;
+      border-top:1px solid #f0f3f8;
+    }
+    .tx-item:first-child{border-top:0}
+    .tx-left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .tx-icon{
+      width:40px;
+      height:40px;
+      border-radius:10px;
+      background:#f3f6ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--deep-2);
+      flex-shrink: 0;
+    }
+    .tx-meta .tx-title{font-weight:700}
+    .tx-meta .tx-sub{font-size:13px;color:var(--muted)}
+
+    /* Right column */
+    .right-col{
+      display:flex;
+      flex-direction:column;
+      gap:18px
+    }
+    .quick-transfer{
+      background:var(--card);
+      padding:16px;
+      border-radius:12px;
+      box-shadow:0 8px 28px rgba(11,18,48,0.06);
+    }
+    .form-row{
+      display:flex;
+      gap:10px;
+      margin-bottom:10px;
+      flex-wrap: wrap;
+    }
+    .form-row .input{flex:1; min-width: 150px;}
+    .input input, .input select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e6eef8;
+      font-size:14px;
+    }
+    .transfer-note{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    /* Simple bar chart (spending) */
+    .spend-card{
+      background:linear-gradient(135deg,#fff,#f7fbff);
+      padding:18px;
+      border-radius:12px;
+      box-shadow:0 8px 28px rgba(11,18,48,0.04);
+    }
+    .bars{
+      display:flex;
+      align-items:end;
+      gap:10px;
+      height:120px;
+      padding-bottom:8px;
+    }
+    .bar{
+      flex:1;
+      border-radius:6px;
+      background:linear-gradient(180deg,var(--accent),#2aa7d8);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size: 12px;
+    }
+    .bar-label{
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    /* Quick links */
+    .links{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .link-pill{
+      background:#f3f6ff;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      color:var(--deep-2);
+      cursor:pointer;
+      white-space: nowrap;
+    }
+
+    /* Footer small */
+    .small-footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      margin:28px 0 60px;
+      padding: 0 12px;
+    }
+
+    /* Inactive Account Overlay - Modern Design */
+.inactive-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(23, 25, 38, 0.9); /* Dark semi-transparent background */
+  z-index: 1000; /* Above everything */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px); /* Subtle blur effect */
+  animation: fadeIn 0.3s ease-out;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.inactive-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inactive-modal h3 {
+  color: var(--inactive);
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inactive-modal p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.inactive-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.inactive-actions button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.inactive-actions .btn-primary {
+  background: var(--inactive);
+  color: white;
+}
+
+.inactive-actions .btn-secondary {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--muted);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .inactive-modal {
+    padding: 24px 16px;
+  }
+  
+  .inactive-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .inactive-actions button {
+    width: 100%;
+  }
+}
+/* Page Transition Effects */
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--deep), var(--deep-2));
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.page-transition.active {
+  opacity: 1;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+.loader-text {
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+  </style>
+</head>
+<body>
+
+ <!-- Full-width header section -->
+  <div class="full-width-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <div class="brand">
+          <h1 class="brand-title">SecureBank</h1>
+          <p class="brand-subtitle">Welcome back — secure dashboard</p>
+        </div>
+    <div class="user-info">
+  <div class="profile-picture">
+    <img src="./profilepic.jpeg" alt="Robert Adrian" id="userProfilePic">
+    
+  </div>
+  <div class="user-details">
+    <h2 class="user-name">ROBERT ADRIAN</h2>
+    <p class="user-meta">Member since 2023</p>
+  </div>
+</div>
+          <div class="account-status" title="Account inactive">
+
+            <i class="fas fa-exclamation-circle"">INACTIVE</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="container">
+
+
+
+        <button class="btn-ghost" id="btnNotifications" title="Notifications"><i class="fas fa-bell"></i></button>
+        <button class="btn-cta" id="btnLogout"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Inactive Account Modal -->
+ <div class="inactive-overlay" id="inactiveOverlay">
+  <div class="inactive-modal">
+    <h3>
+      <i class="fas fa-exclamation-triangle"></i>
+      Account Inactive
+    </h3>
+    <p>
+      Your account is currently inactive and limited to view only mode. 
+      Please contact our support team to reactivate your account and 
+      restore full functionality.
+    </p>
+    <div class="inactive-actions">
+      
+      <button class="btn-secondary" onclick="continueDemo()">
+        Continue in view only Mode
+      </button>
+    </div>
+  </div>
+</div>
+
+  <main class="container" role="main">
+    <section>
+      <div class="overview" aria-hidden="false">
+        <div class="card" style="min-width:240px">
+          <h4>Available Balance</h4>
+          <div class="value" id="availBalance">$ 421,230.12</div>
+          <div class="small-muted">As of <span id="todayDate"></span></div>
+        </div>
+
+        <div class="card" style="min-width:220px">
+          <h4>Monthly Spending</h4>
+          <div class="value" id="monthlySpend">$ 11,790.20</div>
+          <div class="small-muted">This month</div>
+        </div>
+
+        <div class="card" style="min-width:220px">
+          <h4>Savings Goals</h4>
+          <div class="value" id="savings">$ 64,450.00</div>
+          <div class="small-muted">Auto-save: ON</div>
+        </div>
+      </div>
+
+      <div class="accounts" aria-labelledby="accountsTitle">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; flex-wrap: wrap; gap: 10px;">
+          <h3 id="accountsTitle" style="margin:0">Accounts</h3>
+          <div class="links">
+            <div class="link-pill" id="openAccount">+ Open new</div>
+            <div class="link-pill" id="statements">Statements</div>
+          </div>
+        </div>
+
+        <table aria-describedby="accountsTitle">
+          <thead>
+            <tr><th>Account</th><th>Type</th><th style="text-align:right">Balance</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Checking •••• 1234</td>
+              <td>Checking</td>
+              <td style="text-align:right" class="balance">$ 8,230.12</td>
+            </tr>
+            <tr>
+              <td>High-Yield Savings •••• 7890</td>
+              <td>Savings</td>
+              <td style="text-align:right" class="balance">$ 12,450.00</td>
+            </tr>
+            <tr>
+              <td>Credit Line •••• 4567</td>
+              <td>Credit</td>
+              <td style="text-align:right" class="balance">-$ 1,200.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="transactions" aria-labelledby="txTitle">
+        <div class="transactions-header">
+          <div>
+            <h3 id="txTitle" style="margin:0">Recent activity</h3>
+            <div class="small-muted">Latest transactions on your accounts</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center; flex-wrap: wrap;">
+            <select id="filterAccount" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+              <option value="all">All accounts</option>
+              <option value="checking">Checking</option>
+              <option value="savings">Savings</option>
+            </select>
+            <button class="btn-ghost" id="btnViewAll">View all</button>
+          </div>
+        </div>
+
+        <ul class="tx-list" id="txList" aria-live="polite">
+          <!-- JS will fill -->
+        </ul>
+      </div>
+    </section>
+
+    <aside class="right-col" aria-label="Tools & quick actions">
+      <div class="quick-transfer" role="region" aria-labelledby="transferTitle">
+        <h4 id="transferTitle" style="margin:0 0 8px 0">Quick Transfer</h4>
+
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Send funds internally </div>
+
+        <div class="form-row">
+          <div class="input"><label style="font-size:13px;color:var(--muted)">From</label>
+            <select id="fromAccount">
+              <option value="checking">Checking •••• 1234</option>
+              <option value="savings">Savings •••• 7890</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input"><label style="font-size:13px;color:var(--muted)">To (Account or Email)</label>
+            <input id="toAccount" placeholder="e.g. friend@example.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input"><label style="font-size:13px;color:var(--muted)">Amount</label>
+            <input id="amount" type="number" min="0" step="0.01" placeholder="0.00">
+          </div>
+        </div>
+
+        <button id="sendBtn" class="btn-cta" style="width:100%;margin-top:8px">Send</button>
+        <div class="transfer-note">How much would you like to transfer</div>
+      </div>
+
+      <div class="spend-card" aria-hidden="false">
+        <h4 style="margin:0 0 12px 0">Spending (last 7 days)</h4>
+        <div class="bars" id="bars">
+          <!-- Bars added by JS -->
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px">
+          <div class="bar-label">Mon</div>
+          <div class="bar-label">Tue</div>
+          <div class="bar-label">Wed</div>
+          <div class="bar-label">Thu</div>
+          <div class="bar-label">Fri</div>
+          <div class="bar-label">Sat</div>
+          <div class="bar-label">Sun</div>
+        </div>
+      </div>
+
+      <div class="spend-card">
+        <h4 style="margin:0 0 10px 0">Quick links</h4>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="link-pill" onclick="alert('Statements - unavailable')"><i class="fas fa-file-invoice"></i> Statements</div>
+          <div class="link-pill" onclick="alert('Cards - unavailable')"><i class="fas fa-credit-card"></i> Manage cards</div>
+          <div class="link-pill" onclick="alert('Support - unavailable ')"><i class="fas fa-headset"></i> Support</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="small-footer">
+    Safe and secure banking network 
+  </div>
+
+<div class="page-transition" id="pageTransition">
+  <div class="loader"></div>
+  <div class="loader-text">Loading SecureBank</div>
+</div>
+
+  <script>
+
+function continueDemo() {
+  document.getElementById('inactiveOverlay').style.display = 'none';
+  // Optional: Set a cookie/localStorage to remember this choice
+}
+
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString();
+
+    // Demo data (frontend-only)
+    const txData = [
+      { id:1, title:'Grocery Store', sub:'Aug 6 • Checking', amount:-87.24, acct:'checking' },
+      { id:2, title:'Paycheck', sub:'Aug 5 • Checking', amount:12000.00, acct:'checking' },
+      { id:3, title:'Utility Bill', sub:'Aug 4 • Checking', amount:-220.70, acct:'checking' },
+      { id:4, title:'Transfer from Sam', sub:'Aug 3 • Savings', amount:15000.00, acct:'savings' },
+      { id:5, title:'Coffee', sub:'Aug 2 • Checking', amount:-5.75, acct:'checking' }
+    ];
+
+    const spendingLast7= [45, 87, 55, 120, 30, 220, 60]; // demo numbers
+
+    // Populate date
+    document.getElementById('todayDate').textContent = new Date().toLocaleDateString();
+
+    // Render transactions
+    const txList = document.getElementById('txList');
+    function renderTx(filter='all'){
+      txList.innerHTML = '';
+      const list = txData.filter(t => filter === 'all' ? true : t.acct === filter);
+      if(list.length === 0){
+        txList.innerHTML = '<div style="padding:12px;color:var(--muted)">No recent transactions.</div>';
+        return;
+      }
+      list.forEach(t => {
+        const li = document.createElement('li');
+        li.className = 'tx-item';
+        li.innerHTML = `
+          <div class="tx-left">
+            <div class="tx-icon"><i class="fas fa-exchange-alt"></i></div>
+            <div class="tx-meta">
+              <div class="tx-title">${t.title}</div>
+              <div class="tx-sub">${t.sub}</div>
+            </div>
+          </div>
+          <div class="tx-right">
+            <div style="font-weight:700; color:${t.amount < 0 ? '#ef4444' : '#10b981'}">${t.amount < 0 ? '-' : '+'}$${Math.abs(t.amount).toFixed(2)}</div>
+          </div>
+        `;
+        txList.appendChild(li);
+      });
+    }
+    renderTx('all');
+
+    // Filter
+    document.getElementById('filterAccount').addEventListener('change', (e)=>{
+      renderTx(e.target.value === 'all' ? 'all' : e.target.value);
+    });
+
+    // Bars chart (simple)
+    const barsWrap = document.getElementById('bars');
+    function renderBars(){
+      barsWrap.innerHTML = '';
+      const max = Math.max(...spendingLast7);
+      spendingLast7.forEach(val => {
+        const h = Math.round((val / max) * 100);
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = Math.max(10, h) + '%';
+        bar.textContent = '$' + val;
+        barsWrap.appendChild(bar);
+      });
+    }
+    renderBars();
+
+    // Quick transfer (demo)
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const from = document.getElementById('fromAccount').value;
+      const to = document.getElementById('toAccount').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      if(!to || !amount || amount <= 0){
+        alert('Please enter a valid recipient and amount.');
+        return;
+      }
+      // Demo: push to transactions and update balances locally (no backend)
+      const debit = { id: Date.now(), title: `Transfer to ${to}`, sub: `Now • ${from}`, amount: -amount, acct: from };
+      txData.unshift(debit);
+      // Update "Available balance" and monthly spending
+      const availEl = document.getElementById('availBalance');
+      const current = parseFloat(availEl.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+      const newBal = (current - amount);
+      availEl.textContent = '$ ' + newBal.toFixed(2);
+      // monthly spend increase (naive)
+      const msEl = document.getElementById('monthlySpend');
+      const msCur = parseFloat(msEl.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+      msEl.textContent = '$ ' + (msCur + amount).toFixed(2);
+      renderTx(document.getElementById('filterAccount').value === 'all' ? 'all' : document.getElementById('filterAccount').value);
+      alert('Demo transfer recorded locally. In a real app this would call a secure backend.');
+      // Clear inputs
+      document.getElementById('toAccount').value = '';
+      document.getElementById('amount').value = '';
+    });
+
+    // Logout demo (just returns to landing page)
+    document.getElementById('btnLogout').addEventListener('click', ()=>{
+      if(confirm('Sign out and return to the landing page?')){
+        // In production, call sign-out endpoint & clear session.
+        location.href = 'index.html'; // assumes your landing page is index.html
+      }
+    });
+
+    // Optional: Notifications button
+    document.getElementById('btnNotifications').addEventListener('click', ()=>{
+      alert('No new notifications.');
+    });
+
+    // Small accessibility: keyboard 'v' to view all transactions
+    document.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase()==='v') document.getElementById('btnViewAll').click();
+    });
+
+    document.getElementById('btnViewAll').addEventListener('click', ()=>{
+      alert('View all transactions — This feature is unaccessble now .');
+    });
+
+    // Show inactive account modal on load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('inactiveOverlay').style.display = 'flex';
+      }, 1000);
+    });
+// Page Transition Controller
+function navigateWithTransition(url) {
+  const transition = document.getElementById('pageTransition');
+  
+  // Show transition overlay
+  transition.classList.add('active');
+  
+  // Wait for animation to start
+  setTimeout(() => {
+    window.location.href = url;
+  }, 2000); // 2 second delay
+}
+
+// Alternative: Automatic detection for all links
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('a[href]');
+  
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      // Only intercept internal links
+      if (link.href.includes(window.location.hostname)) {
+        e.preventDefault();
+        navigateWithTransition(link.href);
+      }
+    });
+  });
+});
+// Function to update date and time
+function updateDateTime() {
+    const now = new Date();
+    
+    // Format options
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    };
+    
+    // Format the date and time
+    const formattedDateTime = now.toLocaleDateString('en-US', options);
+    
+    // Update the element
+    document.getElementById('todayDate').textContent = formattedDateTime;
+}
+
+// Update immediately
+updateDateTime();
+
+// Update every second (for live clock)
+setInterval(updateDateTime, 1000);
+
+  </script>
+</body>
+</html>
